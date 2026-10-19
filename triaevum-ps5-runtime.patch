@@ -1,0 +1,617 @@
+diff --git a/CMake/oot3d/host_services.cmake b/CMake/oot3d/host_services.cmake
+index 8c8079a..be4b8bf 100644
+--- a/CMake/oot3d/host_services.cmake
++++ b/CMake/oot3d/host_services.cmake
+@@ -87,7 +87,49 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
+ endif()
+ set_property(TARGET oot3d_triaevum_pica_client_bridge PROPERTY FOLDER Tools)
+ 
+-if (OOT3D_DIRECT_AOT_PLUGIN)
++if (OOT3D_DIRECT_AOT_PLUGIN AND PROSPERO)
++    # PS5: no dlopen. The published translated title source is compiled into a
++    # static library the host calls directly (oot3d_native_direct_aot.cpp does this
++    # on platforms without a loader). Without the source, only the stub links and
++    # the host reports that no title is installed.
++    set(TRIAEVUM_PS5_TITLE_DIR "" CACHE PATH "Extracted published translated title source (source/titles)")
++    if(TRIAEVUM_PS5_TITLE_DIR)
++        include(tools/triaevum_release/cmake/TranslatedTitleSources.cmake)
++        triaevum_translated_title_sources("${TRIAEVUM_PS5_TITLE_DIR}" _triaevum_ps5_title_sources)
++        add_library(triaevum_title_aot_stub STATIC EXCLUDE_FROM_ALL
++            ${_triaevum_ps5_title_sources}
++            tools/oot3d/native_game_runtime/triaevum_title_whole_aot_plugin.cpp)
++        target_include_directories(triaevum_title_aot_stub PRIVATE
++            "${TRIAEVUM_PS5_TITLE_DIR}"
++            tools/oot3d/native_game_runtime
++            tools/oot3d/native_a32_runtime
++            tools/oot3d/native_a32_runtime/mass_cpp
++            ${OOT3D_PINNED_A32_ROOT}
++            ${OOT3D_PINNED_A32_ROOT}/recomp)
++        # The host's oot3d_native_direct_aot.cpp has wrappers of the same names that
++        # dispatch to the plugin; as a DLL the title never meets them. Linked into one
++        # program the title's own copies get different names (the plugin wrapper and
++        # the shards are compiled with the same macros, so they agree).
++        target_compile_definitions(triaevum_title_aot_stub PRIVATE OOT3D_NATIVE_GENERATED_WHOLE_AOT=1)
++        # Only the generated entry file and the plugin wrapper name them; the shards do not.
++        set_source_files_properties(
++            "${TRIAEVUM_PS5_TITLE_DIR}/oot3d_whole_aot_generated.cpp"
++            tools/oot3d/native_game_runtime/triaevum_title_whole_aot_plugin.cpp
++            PROPERTIES COMPILE_DEFINITIONS
++            "ExecuteOot3dWholeAotFunction=ExecuteOot3dWholeAotFunctionTitle;Oot3dWholeAotEntryPoints=Oot3dWholeAotEntryPointsTitle")
++        # No PGO profile on this target; strict FP matches the published build.
++        target_compile_options(triaevum_title_aot_stub PRIVATE -O2 -ffp-model=strict -w)
++        target_link_libraries(triaevum_title_aot_stub PRIVATE nlohmann_json::nlohmann_json)
++    else()
++        add_library(triaevum_title_aot_stub STATIC EXCLUDE_FROM_ALL
++            tools/oot3d/native_game_runtime/triaevum_title_aot_stub.cpp)
++        target_include_directories(triaevum_title_aot_stub PRIVATE
++            tools/oot3d/native_game_runtime
++            tools/oot3d/native_a32_runtime
++            ${OOT3D_PINNED_A32_ROOT})
++    endif()
++    set_property(TARGET triaevum_title_aot_stub PROPERTY FOLDER Tools)
++elseif (OOT3D_DIRECT_AOT_PLUGIN)
+     add_library(triaevum_title_aot_stub SHARED EXCLUDE_FROM_ALL
+         tools/oot3d/native_game_runtime/triaevum_title_aot_stub.cpp)
+     target_include_directories(triaevum_title_aot_stub PRIVATE
+diff --git a/runtime/three_ds_recomp/CMakeLists.txt b/runtime/three_ds_recomp/CMakeLists.txt
+index 46739d7..f572d51 100644
+--- a/runtime/three_ds_recomp/CMakeLists.txt
++++ b/runtime/three_ds_recomp/CMakeLists.txt
+@@ -363,6 +363,10 @@ if(CMAKE_SYSTEM_NAME STREQUAL "OpenBSD")
+     include(cmake/dependencies/openbsd.cmake)
+ endif()
+ 
++if(PROSPERO)
++    include(cmake/dependencies/ps5.cmake)
++endif()
++
+ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
+     include(cmake/dependencies/windows.cmake)
+ endif()
+diff --git a/runtime/three_ds_recomp/cmake/dependencies/common.cmake b/runtime/three_ds_recomp/cmake/dependencies/common.cmake
+index 104ee73..975224e 100644
+--- a/runtime/three_ds_recomp/cmake/dependencies/common.cmake
++++ b/runtime/three_ds_recomp/cmake/dependencies/common.cmake
+@@ -29,9 +29,11 @@ target_sources(ImGui
+ 
+ target_sources(ImGui
+     PRIVATE
+-    ${imgui_SOURCE_DIR}/backends/imgui_impl_opengl3.cpp
+     ${imgui_SOURCE_DIR}/backends/imgui_impl_sdl2.cpp
+ )
++if(NOT PROSPERO)
++    target_sources(ImGui PRIVATE ${imgui_SOURCE_DIR}/backends/imgui_impl_opengl3.cpp)
++endif()
+ 
+ target_include_directories(ImGui PUBLIC ${imgui_SOURCE_DIR} ${imgui_SOURCE_DIR}/backends PRIVATE ${SDL2_INCLUDE_DIRS})
+ 
+diff --git a/runtime/three_ds_recomp/cmake/dependencies/ps5.cmake b/runtime/three_ds_recomp/cmake/dependencies/ps5.cmake
+new file mode 100644
+index 0000000..5966367
+--- /dev/null
++++ b/runtime/three_ds_recomp/cmake/dependencies/ps5.cmake
+@@ -0,0 +1,5 @@
++#=================== ImGui (PS5) ===================
++# SDL2 is the PS5 port built by the ps5 kit (static, with the console video, audio
++# and joystick drivers). There is no OpenGL on the console; rendering is Vulkan only.
++find_package(SDL2 REQUIRED)
++target_link_libraries(ImGui PUBLIC SDL2::SDL2-static)
+diff --git a/runtime/three_ds_recomp/cmake/spirv_pack.cmake b/runtime/three_ds_recomp/cmake/spirv_pack.cmake
+index 10134c6..c89ad3c 100644
+--- a/runtime/three_ds_recomp/cmake/spirv_pack.cmake
++++ b/runtime/three_ds_recomp/cmake/spirv_pack.cmake
+@@ -19,12 +19,12 @@ function(triaevum_add_spirv_pack target source pack)
+         set(list "${directory}/${name}.inc")
+         if(NOT EXISTS "${list}" OR "${pack}" IS_NEWER_THAN "${list}")
+             execute_process(COMMAND "${CMAKE_COMMAND}" "-DINPUT=${pack}" "-DOUTPUT=${list}"
+-                -P "${TRIAEVUM_SPIRV_PACK_TO_INC}" COMMAND_ERROR_IS_FATAL ANY)
++                -P "${CMAKE_CURRENT_FUNCTION_LIST_DIR}/spirv_pack_to_inc.cmake" COMMAND_ERROR_IS_FATAL ANY)
+         endif()
+         set_property(DIRECTORY APPEND PROPERTY CMAKE_CONFIGURE_DEPENDS "${pack}")
+         target_include_directories(${target} PRIVATE "${directory}")
+         set_property(SOURCE "${source}" TARGET_DIRECTORY ${target} APPEND PROPERTY
+-            COMPILE_DEFINITIONS TRIAEVUM_SPIRV_PACK_EMBED=0)
++            COMPILE_DEFINITIONS TRIAEVUM_SPIRV_PACK_EMBED=0 TRIAEVUM_SPIRV_PACK_TAIL=1)
+         list(APPEND depends "${list}")
+     endif()
+     set_property(SOURCE "${source}" TARGET_DIRECTORY ${target} APPEND PROPERTY OBJECT_DEPENDS ${depends})
+diff --git a/runtime/three_ds_recomp/cmake/spirv_pack_to_inc.cmake b/runtime/three_ds_recomp/cmake/spirv_pack_to_inc.cmake
+index 1a2684d..3d20591 100644
+--- a/runtime/three_ds_recomp/cmake/spirv_pack_to_inc.cmake
++++ b/runtime/three_ds_recomp/cmake/spirv_pack_to_inc.cmake
+@@ -1,8 +1,12 @@
+ # cmake -DINPUT=<pack> -DOUTPUT=<list> -P spirv_pack_to_inc.cmake
+-# The bytes of a SPIR-V pack as a C initializer list, 32 per line, for
+-# compilers without #embed.
++# The bytes of a SPIR-V pack as one string literal, 32 bytes per line, for
++# compilers without #embed. A string literal is far cheaper to parse than a
++# brace list with one element per byte (tens of millions for the larger packs).
++# The array it initializes has one extra terminating byte; sources view the pack
++# through TRIAEVUM_SPIRV_PACK_VIEW, which drops it.
+ file(READ "${INPUT}" hex HEX)
+ string(REGEX REPLACE "(................................................................)" "\\1\n" hex "${hex}")
+-string(REGEX REPLACE "([0-9a-f][0-9a-f])" "0x\\1," bytes "${hex}")
+-file(WRITE "${OUTPUT}.tmp" "${bytes}\n")
++string(REGEX REPLACE "([0-9a-f][0-9a-f])" "\\\\x\\1" bytes "${hex}")
++string(REGEX REPLACE "\n" "\"\n\"" bytes "${bytes}")
++file(WRITE "${OUTPUT}.tmp" "\"${bytes}\"\n")
+ file(RENAME "${OUTPUT}.tmp" "${OUTPUT}")
+diff --git a/runtime/three_ds_recomp/include/fast/renderer/spirv_pack.h b/runtime/three_ds_recomp/include/fast/renderer/spirv_pack.h
+index c004101..c419e3e 100644
+--- a/runtime/three_ds_recomp/include/fast/renderer/spirv_pack.h
++++ b/runtime/three_ds_recomp/include/fast/renderer/spirv_pack.h
+@@ -42,6 +42,12 @@
+ #define TRIAEVUM_SPIRV_PACK_EMBED 0
+ #endif
+ #endif
++#ifndef TRIAEVUM_SPIRV_PACK_TAIL
++#define TRIAEVUM_SPIRV_PACK_TAIL 0
++#endif
++// The pack bytes, without the terminating byte of the string-literal fallback.
++#define TRIAEVUM_SPIRV_PACK_VIEW(array) \
++    std::span<const unsigned char>((array), sizeof(array) - TRIAEVUM_SPIRV_PACK_TAIL)
+ #if defined(__clang__)
+ #define TRIAEVUM_SPIRV_PACK_EMBED_BEGIN \
+     _Pragma("clang diagnostic push") _Pragma("clang diagnostic ignored \"-Wc23-extensions\"")
+diff --git a/runtime/three_ds_recomp/src/CMakeLists.txt b/runtime/three_ds_recomp/src/CMakeLists.txt
+index 0f7d04b..fce0722 100644
+--- a/runtime/three_ds_recomp/src/CMakeLists.txt
++++ b/runtime/three_ds_recomp/src/CMakeLists.txt
+@@ -306,8 +306,10 @@ if (CMAKE_SYSTEM_NAME STREQUAL "iOS")
+         )
+     endif()
+ else()
++    if(NOT PROSPERO)
++        target_compile_definitions(three_ds_recomp_runtime PRIVATE ENABLE_OPENGL)
++    endif()
+     target_compile_definitions(three_ds_recomp_runtime PRIVATE
+-        ENABLE_OPENGL
+         $<$<CONFIG:Debug>:_DEBUG>
+         $<$<NOT:$<CONFIG:Debug>>:NDEBUG>
+         SPDLOG_ACTIVE_LEVEL=${SPDLOG_MIN_CUTOFF}
+diff --git a/runtime/three_ds_recomp/src/fast/Fast3dGui.cpp b/runtime/three_ds_recomp/src/fast/Fast3dGui.cpp
+index e11cd74..c49d608 100644
+--- a/runtime/three_ds_recomp/src/fast/Fast3dGui.cpp
++++ b/runtime/three_ds_recomp/src/fast/Fast3dGui.cpp
+@@ -40,6 +40,8 @@
+ #ifdef ENABLE_OPENGL
+ #include <imgui_impl_opengl3.h>
+ #include <imgui_impl_sdl2.h>
++#elif defined(__PROSPERO__)
++#include <imgui_impl_sdl2.h>
+ #endif
+ 
+ #if defined(ENABLE_DX11) || defined(ENABLE_DX12)
+diff --git a/runtime/three_ds_recomp/src/fast/backends/gfx_sdl2.cpp b/runtime/three_ds_recomp/src/fast/backends/gfx_sdl2.cpp
+index 5938cd9..eaa6eaf 100644
+--- a/runtime/three_ds_recomp/src/fast/backends/gfx_sdl2.cpp
++++ b/runtime/three_ds_recomp/src/fast/backends/gfx_sdl2.cpp
+@@ -1,4 +1,4 @@
+-#if defined(ENABLE_OPENGL) || defined(__APPLE__)
++#if defined(ENABLE_OPENGL) || defined(__APPLE__) || defined(__PROSPERO__)
+ 
+ #include <algorithm>
+ #include <stdio.h>
+diff --git a/runtime/three_ds_recomp/src/fast/backends/gfx_vulkan_internal.h b/runtime/three_ds_recomp/src/fast/backends/gfx_vulkan_internal.h
+index 113..113 100644
+--- a/runtime/three_ds_recomp/src/fast/backends/gfx_vulkan_internal.h
++++ b/runtime/three_ds_recomp/src/fast/backends/gfx_vulkan_internal.h
+@@ -113,6 +113,12 @@ using Renderer3ds::kMaximumNriPipelineCacheBytes;
+ 
+ std::filesystem::path VulkanPipelineCachePath(bool nri = false) {
++#if defined(__PROSPERO__)
++    // The console driver stalls for minutes (or for good) when a stored pipeline cache is loaded
++    // into it: the cache is neither read nor written there.
++    (void)nri;
++    return {};
++#endif
+     const auto directory = VulkanShaderCacheDirectory();
+     return directory.empty() ? std::filesystem::path{}
+         : directory / (nri ? Renderer3ds::kNriPipelineCacheFilename : "pipeline_cache.bin");
+diff --git a/runtime/three_ds_recomp/src/fast/backends/gfx_vulkan_lifecycle.cpp b/runtime/three_ds_recomp/src/fast/backends/gfx_vulkan_lifecycle.cpp
+index 261..261 100644
+--- a/runtime/three_ds_recomp/src/fast/backends/gfx_vulkan_lifecycle.cpp
++++ b/runtime/three_ds_recomp/src/fast/backends/gfx_vulkan_lifecycle.cpp
+@@ -261,8 +261,11 @@
+                     mNriPicaPipelineBridge.PipelineStatistics().InitialCacheBytes);
+     }
+     LoadDlssFeatureRecord();
++#if !defined(__PROSPERO__)
++    // On the console a launch that loads the stored placements stalls for good, so none are kept there.
+     if (const auto directory = VulkanShaderCacheDirectory(); !directory.empty())
+         mInteractiveGrassPass.SetCacheDirectory(directory / "grass_placements_v1");
++#endif
+     // Grass rule textures' signatures, for their twins in scenes that do not
+     // draw them.
+     if (const auto directory = VulkanShaderCacheDirectory(); !directory.empty())
+diff --git a/runtime/three_ds_recomp/src/fast/backends/gfx_vulkan_pica_textures.cpp b/runtime/three_ds_recomp/src/fast/backends/gfx_vulkan_pica_textures.cpp
+index 824..824 100644
+--- a/runtime/three_ds_recomp/src/fast/backends/gfx_vulkan_pica_textures.cpp
++++ b/runtime/three_ds_recomp/src/fast/backends/gfx_vulkan_pica_textures.cpp
+@@ -824,12 +824,35 @@
+         return;
+     }
+     auto& frame = mFrameResources[mCurrentFrame];
+-    const VkDeviceSize uploadOffset = (frame.VertexBytesUsed + 15U) & ~VkDeviceSize(15U);
+-    if (uploadOffset + pixels.size() > frame.VertexBuffer.Size)
+-        throw std::runtime_error("native PICA texture exceeds the per-frame upload arena");
+-    std::memcpy(static_cast<uint8_t*>(frame.VertexBuffer.Mapped) + uploadOffset,
+-                pixels.data(), pixels.size());
+-    frame.VertexBytesUsed = uploadOffset + pixels.size();
++    VkBuffer uploadBuffer = frame.VertexBuffer.Buffer;
++    VkDeviceSize uploadOffset = (frame.VertexBytesUsed + 15U) & ~VkDeviceSize(15U);
++    // At most half of the arena goes to textures: the rest must stay free for geometry
++    // and UI, which throw when it runs out.
++    if (uploadOffset + pixels.size() <= frame.VertexBuffer.Size / 2U) {
++        std::memcpy(static_cast<uint8_t*>(frame.VertexBuffer.Mapped) + uploadOffset,
++                    pixels.data(), pixels.size());
++        frame.VertexBytesUsed = uploadOffset + pixels.size();
++    } else {
++        // The shared per-frame arena is full (replacement textures are far larger than
++        // the native ones, and a room loads many at once). Stage this upload in a buffer
++        // of its own, released when this frame slot is next reused, so the arena stays
++        // available to geometry.
++        auto staging = CreateBuffer(
++            pixels.size(), VK_BUFFER_USAGE_TRANSFER_SRC_BIT,
++            VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT, true);
++        std::memcpy(staging.Mapped, pixels.data(), pixels.size());
++        uploadBuffer = staging.Buffer;
++        uploadOffset = 0U;
++        frame.RetiredUniformBuffers.push_back(staging);
++    }
+ 
+     VkCommandBuffer commandBuffer = mCommandBuffers[mCurrentFrame];
+     VkImageMemoryBarrier toTransfer{VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER};
+@@ -859,7 +872,7 @@
+     copy.imageSubresource.layerCount = 1U;
+     copy.imageOffset.y = static_cast<int32_t>(rowOffset);
+     copy.imageExtent = {width, rowCount, 1U};
+-    vkCmdCopyBufferToImage(commandBuffer, frame.VertexBuffer.Buffer, texture.Image,
++    vkCmdCopyBufferToImage(commandBuffer, uploadBuffer, texture.Image,
+         VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, 1U, &copy);
+     VkImageMemoryBarrier toShaderRead{VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER};
+     toShaderRead.oldLayout = VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL;
+diff --git a/runtime/three_ds_recomp/src/fast/backends/gfx_vulkan_pica_draw.cpp b/runtime/three_ds_recomp/src/fast/backends/gfx_vulkan_pica_draw.cpp
+index c7ca55e..9827189 100644
+--- a/runtime/three_ds_recomp/src/fast/backends/gfx_vulkan_pica_draw.cpp
++++ b/runtime/three_ds_recomp/src/fast/backends/gfx_vulkan_pica_draw.cpp
+@@ -2495,8 +2495,12 @@
+             frameContent.CoversWholeTarget &&
+             mPicaSceneFrame.HasSceneDrawOnColorTarget(
+                 draw.FramebufferColorPhysicalAddress);
+-        if (wholeTargetUi) {
+-            frameContent.SceneDrewOnTarget = true;
++        // A solid wash can cover the frame before any scene has drawn on the target
++        // (a fade over a loading screen), so the evidence is gathered for every
++        // whole-target Ui draw; the scene requirement is applied by the resolver.
++        if (draw.CompositionDomain == Renderer3ds::PicaCompositionDomain::Ui &&
++            frameContent.CoversWholeTarget) {
++            frameContent.SceneDrewOnTarget = wholeTargetUi;
+             frameContent.Untextured = draw.Textures.empty();
+             frameContent.SamplesOnlyRenderedCopies =
+                 !draw.Textures.empty() &&
+diff --git a/runtime/three_ds_recomp/include/fast/renderer3ds/pica_composition.h b/runtime/three_ds_recomp/include/fast/renderer3ds/pica_composition.h
+index 75..75 100644
+--- a/runtime/three_ds_recomp/include/fast/renderer3ds/pica_composition.h
++++ b/runtime/three_ds_recomp/include/fast/renderer3ds/pica_composition.h
+@@ -75,10 +75,18 @@
+     PicaCompositionDomain declared,
+     const PicaUiFrameContentEvidence& evidence) noexcept {
+     if (declared != PicaCompositionDomain::Ui || !evidence.CoversWholeTarget ||
+-        !evidence.SceneDrewOnTarget || !evidence.GeometryCoversViewport) {
++        !evidence.GeometryCoversViewport) {
+         return {declared, PicaScreenContent::None};
+     }
+-    if (evidence.Untextured || evidence.SamplesOnlyRenderedCopies) {
++    // A solid wash whose geometry provably covers the target is a wash of the
++    // frame whether or not a scene has drawn yet: a fade over a loading screen.
++    if (evidence.Untextured) {
++        return {PicaCompositionDomain::Screen, PicaScreenContent::RenderedFrame};
++    }
++    if (!evidence.SceneDrewOnTarget) {
++        return {declared, PicaScreenContent::None};
++    }
++    if (evidence.SamplesOnlyRenderedCopies) {
+         return {PicaCompositionDomain::Screen, PicaScreenContent::RenderedFrame};
+     }
+     return {PicaCompositionDomain::Screen,
+diff --git a/runtime/three_ds_recomp/src/fast/oot3d/nri_directional_shadow_pass.cpp b/runtime/three_ds_recomp/src/fast/oot3d/nri_directional_shadow_pass.cpp
+index 4152e86..b9a5887 100644
+--- a/runtime/three_ds_recomp/src/fast/oot3d/nri_directional_shadow_pass.cpp
++++ b/runtime/three_ds_recomp/src/fast/oot3d/nri_directional_shadow_pass.cpp
+@@ -1109,6 +1109,7 @@ NriDirectionalShadowPass::NriDirectionalShadowPass() : mImpl(std::make_unique<Im
+ }
+ 
+ NriDirectionalShadowPass::~NriDirectionalShadowPass() {
++#ifdef ENABLE_OOT3D_NRI
+     if (mImpl->CasterTrace) {
+         mImpl->CasterTraceLines.clear();
+         mImpl->CasterTrace->Flush(mImpl->CasterTraceLines);
+@@ -1116,6 +1117,7 @@ NriDirectionalShadowPass::~NriDirectionalShadowPass() {
+             std::fprintf(stderr, "%s\n", line.c_str());
+         std::fflush(stderr);
+     }
++#endif
+     Shutdown();
+ }
+ 
+diff --git a/runtime/three_ds_recomp/src/fast/oot3d/pica_caster_fragment_binaries.cpp b/runtime/three_ds_recomp/src/fast/oot3d/pica_caster_fragment_binaries.cpp
+index 6b0e7aa..31a1440 100644
+--- a/runtime/three_ds_recomp/src/fast/oot3d/pica_caster_fragment_binaries.cpp
++++ b/runtime/three_ds_recomp/src/fast/oot3d/pica_caster_fragment_binaries.cpp
+@@ -18,7 +18,7 @@ TRIAEVUM_SPIRV_PACK_EMBED_END
+ } // namespace
+ 
+ std::span<const Renderer::PassShaderArtifact> CasterFragmentArtifacts() {
+-    static const auto entries = Renderer::ReadSpirvPack(kPack);
++    static const auto entries = Renderer::ReadSpirvPack(TRIAEVUM_SPIRV_PACK_VIEW(kPack));
+     static const auto artifacts = Renderer::PassShaderArtifactsFromPack(entries);
+     return artifacts;
+ }
+diff --git a/runtime/three_ds_recomp/src/fast/oot3d/pica_shader_instrumentation.cpp b/runtime/three_ds_recomp/src/fast/oot3d/pica_shader_instrumentation.cpp
+index 7d5e463..7d267d4 100644
+--- a/runtime/three_ds_recomp/src/fast/oot3d/pica_shader_instrumentation.cpp
++++ b/runtime/three_ds_recomp/src/fast/oot3d/pica_shader_instrumentation.cpp
+@@ -5,6 +5,7 @@
+ #include "fast/renderer3ds/pica_geometry_guide.h"
+ #include "fast/renderer3ds/pica_material_guide.h"
+ 
++#include <cstdlib>
+ #include <algorithm>
+ #include <charconv>
+ #include <array>
+@@ -273,7 +274,7 @@ float LiteralValue(float value) noexcept {
+     stream << std::fixed << std::setprecision(6) << value;
+     const auto text = stream.str();
+     float parsed = 0.0F;
+-    std::from_chars(text.data(), text.data() + text.size(), parsed);
++    parsed = std::strtof(text.c_str(), nullptr); // libc++ 18 lacks floating from_chars
+     return parsed;
+ }
+ 
+diff --git a/runtime/three_ds_recomp/src/fast/oot3d/pica_temporal_fragment_binaries.cpp b/runtime/three_ds_recomp/src/fast/oot3d/pica_temporal_fragment_binaries.cpp
+index dc747c5..dae7481 100644
+--- a/runtime/three_ds_recomp/src/fast/oot3d/pica_temporal_fragment_binaries.cpp
++++ b/runtime/three_ds_recomp/src/fast/oot3d/pica_temporal_fragment_binaries.cpp
+@@ -20,7 +20,7 @@ TRIAEVUM_SPIRV_PACK_EMBED_END
+ } // namespace
+ 
+ std::span<const Renderer3ds::PicaFragmentArtifact> TemporalFragmentArtifacts() {
+-    static const auto entries = Renderer::ReadSpirvPack(kPack);
++    static const auto entries = Renderer::ReadSpirvPack(TRIAEVUM_SPIRV_PACK_VIEW(kPack));
+     static const auto artifacts = Renderer3ds::PicaFragmentArtifactsFromPack(entries);
+     return artifacts;
+ }
+diff --git a/runtime/three_ds_recomp/src/fast/oot3d/pica_toon_fragment_binaries.cpp b/runtime/three_ds_recomp/src/fast/oot3d/pica_toon_fragment_binaries.cpp
+index eeaeeb2..66c6724 100644
+--- a/runtime/three_ds_recomp/src/fast/oot3d/pica_toon_fragment_binaries.cpp
++++ b/runtime/three_ds_recomp/src/fast/oot3d/pica_toon_fragment_binaries.cpp
+@@ -20,7 +20,7 @@ TRIAEVUM_SPIRV_PACK_EMBED_END
+ } // namespace
+ 
+ std::span<const Renderer3ds::PicaFragmentArtifact> ToonFragmentArtifacts() {
+-    static const auto entries = Renderer::ReadSpirvPack(kPack);
++    static const auto entries = Renderer::ReadSpirvPack(TRIAEVUM_SPIRV_PACK_VIEW(kPack));
+     static const auto artifacts = Renderer3ds::PicaFragmentArtifactsFromPack(entries);
+     return artifacts;
+ }
+diff --git a/runtime/three_ds_recomp/src/fast/oot3d/pica_uber_fragment_binaries.cpp b/runtime/three_ds_recomp/src/fast/oot3d/pica_uber_fragment_binaries.cpp
+index b6de495..2f3f9f4 100644
+--- a/runtime/three_ds_recomp/src/fast/oot3d/pica_uber_fragment_binaries.cpp
++++ b/runtime/three_ds_recomp/src/fast/oot3d/pica_uber_fragment_binaries.cpp
+@@ -18,7 +18,7 @@ TRIAEVUM_SPIRV_PACK_EMBED_END
+ } // namespace
+ 
+ std::span<const Renderer3ds::PicaFragmentArtifact> UberFragmentArtifacts() {
+-    static const auto entries = Renderer::ReadSpirvPack(kPack);
++    static const auto entries = Renderer::ReadSpirvPack(TRIAEVUM_SPIRV_PACK_VIEW(kPack));
+     static const auto artifacts = Renderer3ds::PicaFragmentArtifactsFromPack(entries);
+     return artifacts;
+ }
+diff --git a/runtime/three_ds_recomp/src/fast/renderer/builtin_pass_binaries.cpp b/runtime/three_ds_recomp/src/fast/renderer/builtin_pass_binaries.cpp
+index 95e69af..569716c 100644
+--- a/runtime/three_ds_recomp/src/fast/renderer/builtin_pass_binaries.cpp
++++ b/runtime/three_ds_recomp/src/fast/renderer/builtin_pass_binaries.cpp
+@@ -18,7 +18,7 @@ TRIAEVUM_SPIRV_PACK_EMBED_END
+ } // namespace
+ 
+ std::span<const PassShaderArtifact> BuiltinPassArtifacts() {
+-    static const auto entries = Renderer::ReadSpirvPack(kPack);
++    static const auto entries = Renderer::ReadSpirvPack(TRIAEVUM_SPIRV_PACK_VIEW(kPack));
+     static const auto artifacts = PassShaderArtifactsFromPack(entries);
+     return artifacts;
+ }
+diff --git a/runtime/three_ds_recomp/src/fast/renderer3ds/pica_native_fragment_binaries.cpp b/runtime/three_ds_recomp/src/fast/renderer3ds/pica_native_fragment_binaries.cpp
+index c86c13a..535ddee 100644
+--- a/runtime/three_ds_recomp/src/fast/renderer3ds/pica_native_fragment_binaries.cpp
++++ b/runtime/three_ds_recomp/src/fast/renderer3ds/pica_native_fragment_binaries.cpp
+@@ -19,7 +19,7 @@ TRIAEVUM_SPIRV_PACK_EMBED_END
+ } // namespace
+ 
+ std::span<const PicaFragmentArtifact> NativeFragmentArtifacts() {
+-    static const auto entries = Renderer::ReadSpirvPack(kPack);
++    static const auto entries = Renderer::ReadSpirvPack(TRIAEVUM_SPIRV_PACK_VIEW(kPack));
+     static const auto artifacts = PicaFragmentArtifactsFromPack(entries);
+     return artifacts;
+ }
+diff --git a/runtime/three_ds_recomp/src/ship/resource/archive/FolderArchive.cpp b/runtime/three_ds_recomp/src/ship/resource/archive/FolderArchive.cpp
+index 30..30 100644
+--- a/runtime/three_ds_recomp/src/ship/resource/archive/FolderArchive.cpp
++++ b/runtime/three_ds_recomp/src/ship/resource/archive/FolderArchive.cpp
+@@ -30,10 +30,15 @@
+ 
+     for (const auto& fileEntry : fileEntries) {
+         std::error_code ec;
++#if defined(__PROSPERO__)
++        // relative() consults the working directory, which the console does not give us.
++        auto relativePath = std::filesystem::path(fileEntry).lexically_normal().lexically_relative(basePath);
++#else
+         auto relativePath = std::filesystem::relative(std::filesystem::path(fileEntry), basePath, ec);
+         if (ec) {
+             relativePath = std::filesystem::path(fileEntry).lexically_relative(basePath);
+         }
++#endif
+         if (relativePath.empty() || relativePath.is_absolute()) {
+             SPDLOG_WARN("Skipping folder archive entry outside archive root: {}", fileEntry);
+             continue;
+diff --git a/runtime/three_ds_recomp/src/fast/renderer/shaderc_compiler.cpp b/runtime/three_ds_recomp/src/fast/renderer/shaderc_compiler.cpp
+index 70..70 100644
+--- a/runtime/three_ds_recomp/src/fast/renderer/shaderc_compiler.cpp
++++ b/runtime/three_ds_recomp/src/fast/renderer/shaderc_compiler.cpp
+@@ -70,6 +70,11 @@
+     return out.str();
+ }
+ std::string IdentifyCompiler() {
++#if defined(__PROSPERO__)
++    // shaderc is linked statically into the console build: there is no library file to
++    // fingerprint (dladdr finds none), so its pinned source revision is the identity.
++    return "shaderc/vulkan1.1/performance/main/v1/ps5-static/d5f08ae5";
++#else
+     std::set<std::filesystem::path> paths;
+ #ifdef _WIN32
+     HMODULE owner = nullptr;
+@@ -119,6 +124,7 @@
+     std::string contract = "shaderc/vulkan1.1/performance/main/v1";
+     for (const auto& fingerprint : fingerprints) contract += "/" + fingerprint;
+     return contract;
++#endif
+ }
+ }
+ 
+diff --git a/tools/oot3d/native_demo_host/oot3d_demo_host_context.cpp b/tools/oot3d/native_demo_host/oot3d_demo_host_context.cpp
+index 65..65 100644
+--- a/tools/oot3d/native_demo_host/oot3d_demo_host_context.cpp
++++ b/tools/oot3d/native_demo_host/oot3d_demo_host_context.cpp
+@@ -65,6 +65,9 @@
+     std::error_code error;
+     auto marker = std::filesystem::path(configurationPath);
+     marker += ".launching";
++#if !defined(__PROSPERO__)
++    // On the console the game is often ended from the home screen within its first minute; the saved
++    // presentation is not at fault there, so it is never reset.
+     if (std::filesystem::exists(marker, error)) {
+ #if defined(_WIN32)
+         _putenv_s("TRIAEVUM_SAFE_PRESENTATION", "the previous launch ended within its first minute");
+@@ -72,6 +75,7 @@
+         setenv("TRIAEVUM_SAFE_PRESENTATION", "the previous launch ended within its first minute", 1);
+ #endif
+     }
++#endif
+     if (!marker.parent_path().empty())
+         std::filesystem::create_directories(marker.parent_path(), error);
+     std::ofstream(marker) << "TriAevum launch in progress\n";
+@@ -94,7 +94,12 @@
+ void InitContextForDemo(const Args& args) {
+     RecordSwitchHostInitStage("host_create_context");
+     ArmLaunchMarker(args.ConfigurationPath);
++#if defined(__PROSPERO__)
++    // The console has no usable relative working directory; logs live under SHIP_HOME.
++    std::filesystem::create_directories(Ship::Context::GetPathRelativeToAppDirectory("logs"));
++#else
+     std::filesystem::create_directories("logs");
++#endif
+     auto* context = Ship::Context::CreateUninitializedInstance(
+         args.ApplicationName, args.ApplicationId, args.ConfigurationPath);
+     if (context == nullptr) {
+diff --git a/runtime/three_ds_recomp/src/ship/Context.cpp b/runtime/three_ds_recomp/src/ship/Context.cpp
+index 556..556 100644
+--- a/runtime/three_ds_recomp/src/ship/Context.cpp
++++ b/runtime/three_ds_recomp/src/ship/Context.cpp
+@@ -556,7 +556,7 @@
+     }
+ #endif
+ 
+-#if defined(__linux__)
++#if defined(__linux__) || defined(__PROSPERO__)
+     char* fpath = std::getenv("SHIP_HOME");
+     if (fpath != NULL) {
+         return std::string(fpath);
+diff --git a/tools/oot3d/native_game_runtime/oot3d_native_game.cpp b/tools/oot3d/native_game_runtime/oot3d_native_game.cpp
+index e574720..5877c7e 100644
+--- a/tools/oot3d/native_game_runtime/oot3d_native_game.cpp
++++ b/tools/oot3d/native_game_runtime/oot3d_native_game.cpp
+@@ -2,6 +2,7 @@
+ #include <cstdlib>
+ #include "oot3d_game_language.h"
+ #include <array>
++#include <cstdio>
+ #include <exception>
+ #include <fstream>
+ #include <iostream>
+@@ -205,6 +205,19 @@ int main(int argc, char** argv) {
+             argv = homebrewArguments.data();
+         }
+ #else
++#if defined(__PROSPERO__)
++        // PS5: no command line. The launch profile is written beside the prepared
++        // data by the port's make-ps5-profile.py (see ps5/README.md).
++        std::array<char*, 3> consoleArguments{
++            argc > 0 ? argv[0] : const_cast<char*>("eboot.bin"),
++            const_cast<char*>("--launch-profile"),
++            const_cast<char*>("/app0/triaevum/ps5-launch-profile.json"),
++        };
++        if (argc <= 1) {
++            argc = static_cast<int>(consoleArguments.size());
++            argv = consoleArguments.data();
++        }
++#endif
+         preparedArguments = PrepareNativeGameArguments(argc, argv);
+         if (!preparedArguments.Pointers.empty()) {
+             argc = static_cast<int>(preparedArguments.Pointers.size());
+@@ -272,6 +273,11 @@
+ #endif
+     } catch (const std::exception& ex) {
+         std::cerr << "oot3d_native_game: " << ex.what() << '\n';
++#if defined(__PROSPERO__)
++        // The console's klog reads the C stream stderr only (std::cerr may not reach it).
++        std::fprintf(stderr, "oot3d_native_game: %s\n", ex.what());
++        std::fflush(stderr);
++#endif
+ #if defined(__SWITCH__)
+         WriteSwitchBootStatus("failed", ex.what());
+ #endif
+diff --git a/tools/oot3d/native_pica_frontend/oot3d_native_vertex_binaries.cpp b/tools/oot3d/native_pica_frontend/oot3d_native_vertex_binaries.cpp
+index b93fa3f..5063b60 100644
+--- a/tools/oot3d/native_pica_frontend/oot3d_native_vertex_binaries.cpp
++++ b/tools/oot3d/native_pica_frontend/oot3d_native_vertex_binaries.cpp
+@@ -18,7 +18,7 @@ alignas(16) const unsigned char kPack[] = {
+ };
+ TRIAEVUM_SPIRV_PACK_EMBED_END
+ const std::vector<Fast::Renderer::SpirvPackEntry>& Entries() {
+-    static const auto entries = Fast::Renderer::ReadSpirvPack(kPack);
++    static const auto entries = Fast::Renderer::ReadSpirvPack(TRIAEVUM_SPIRV_PACK_VIEW(kPack));
+     return entries;
+ }
+ } // namespace
+diff --git a/tools/oot3d/native_game_runtime/oot3d_savestate_panel.cpp b/tools/oot3d/native_game_runtime/oot3d_savestate_panel.cpp
+index fb3303a..88dd1de 100644
+--- a/tools/oot3d/native_game_runtime/oot3d_savestate_panel.cpp
++++ b/tools/oot3d/native_game_runtime/oot3d_savestate_panel.cpp
+@@ -34,7 +34,14 @@ std::string SizeText(std::uintmax_t bytes) {
+ }
+ 
+ std::string TimeText(std::filesystem::file_time_type time) {
++  #if defined(__PROSPERO__)
++  // libc++ 18 has no clock_cast; approximate through the current offset.
++  const auto system = std::chrono::system_clock::now() +
++      std::chrono::duration_cast<std::chrono::system_clock::duration>(
++          time - std::filesystem::file_time_type::clock::now());
++#else
+   const auto system = std::chrono::clock_cast<std::chrono::system_clock>(time);
++#endif
+   const std::time_t seconds = std::chrono::system_clock::to_time_t(system);
+   std::tm local{};
+ #if defined(_WIN32)
+diff --git a/tools/oot3d/native_game_runtime/oot3d_scene_environment.cpp b/tools/oot3d/native_game_runtime/oot3d_scene_environment.cpp
+index 4bc9988..2071590 100644
+--- a/tools/oot3d/native_game_runtime/oot3d_scene_environment.cpp
++++ b/tools/oot3d/native_game_runtime/oot3d_scene_environment.cpp
+@@ -360,7 +360,7 @@ std::string SceneEnvironmentRuntime::FileStampLocked(bool night) const {
+       return exists || error ? std::string("unreadable") : std::string("-");
+     }
+     const auto time = std::filesystem::last_write_time(path, error);
+-    return std::to_string(size) + ":" + std::to_string(error ? 0 : time.time_since_epoch().count());
++    return std::to_string(size) + ":" + std::to_string(static_cast<long long>(error ? 0 : time.time_since_epoch().count()));
+   };
+   auto own = stamp(ProfilePathLocked(night));
+   if (own != "-") return "scene:" + own;
