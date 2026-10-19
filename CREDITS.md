@@ -1,6 +1,6 @@
 # Credits
 
-## PS5_WindWakerHD — griches / Mihawk
+PS5_WindWakerHD - griches / Mihawk
 
 https://github.com/griches/PS5_WindWakerHD
 
@@ -22,7 +22,7 @@ The platform layer, build toolchain, and prebuilt kit that this port is built on
 
 ---
 
-## TriAevum — nicbarker
+TriAevum - nicbarker
 
 https://github.com/nicbarker/triaevum
 
@@ -30,6 +30,6 @@ The upstream project this port targets. AOT-recompiled Ocarina of Time 3D with a
 
 ---
 
-## Henriko Maggioni — texture pack (optional)
+Henriko Maggioni - texture pack (used for showcase material)
 
 4K Azahar-format texture pack for OoT3D. Not included in this repo; bring your own copy. Textures go into `/app0/triaevum/textures/` on the console.
