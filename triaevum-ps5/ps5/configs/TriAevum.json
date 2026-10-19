@@ -1,0 +1,1454 @@
+{
+    "Graphics": {
+        "AA": {
+            "Mode": "Off",
+            "MsaaSamples": 1,
+            "TAA": {
+                "ClampExpansion": 0.05000000074505806,
+                "HistoryWeight": 0.8999999761581421,
+                "Sharpness": 0.10000000149011612
+            },
+            "Upscaler": {
+                "DlssModel": "Transformer",
+                "Provider": "NIS",
+                "Quality": "Quality",
+                "Sharpness": 0.3499999940395355
+            }
+        },
+        "Camera": {
+            "ExtendedDrawDistance": false,
+            "FovMultiplier": 1.100000023841858
+        },
+        "Effects": {
+            "AO": {
+                "BlurPassCount": 2,
+                "DetailRadius": 0.05000000074505806,
+                "DetailStrength": 0.5,
+                "FadeOutFrom": 0.0,
+                "FadeOutTo": 3000.0,
+                "HorizonAngleThreshold": 0.05999999865889549,
+                "Mode": "Off",
+                "Mxao": {
+                    "FadeDistance": 0.35899999737739563,
+                    "Filter": 2,
+                    "IncreaseRadiusWithDistance": true,
+                    "Method": "SolidAngle",
+                    "Normals": "Geometry",
+                    "OriginalFade": false,
+                    "Quality": 0,
+                    "ScreenRadius": 2.5,
+                    "ShadingRate": 1,
+                    "Temporal": true
+                },
+                "Quality": 1,
+                "Radius": 1.5399999618530273,
+                "ShadowClamp": 0.9800000190734863,
+                "ShadowPower": 1.5,
+                "Sharpness": 0.9800000190734863,
+                "Strength": 1.0,
+                "TextureRelief": "Off"
+            },
+            "DirectionalShadows": {
+                "ContactShadows": {
+                    "Blur": 1.0,
+                    "Enabled": false,
+                    "HalfResolution": true,
+                    "Length": 1,
+                    "Opacity": 1.0,
+                    "SurfaceThickness": 0.009999999776482582
+                },
+                "DepthBiasConstant": 1.25,
+                "DepthBiasSlope": 1.75,
+                "MaximumDistance": 6550.0,
+                "Mode": "Off",
+                "NormalBias": 1.0,
+                "PcfRadius": 2,
+                "Resolution": 2048,
+                "Strength": 1.0
+            },
+            "GlobalIllumination": {
+                "DiffuseIntensity": 0.05999999865889549,
+                "DynamicLights": 0.3499999940395355,
+                "KeyLight": 1.600000023841858,
+                "Mode": "Off",
+                "Resolution": "Half",
+                "SceneLight": 0.0,
+                "ScreenSpace": {
+                    "FilterLevels": 2,
+                    "HighlightClamp": 0.0,
+                    "RadialCandidates": 20,
+                    "Radius": 150.0,
+                    "Sections": 1,
+                    "Sectors": 64,
+                    "Temporal": true,
+                    "Thickness": 30.0,
+                    "Validation": false,
+                    "WorkScale": "Quarter"
+                },
+                "SkyLight": 0.20000000298023224,
+                "Specular": false,
+                "SpecularIntensity": 0.0
+            },
+            "PointShadows": {
+                "MaxLights": 4,
+                "Mode": "Off",
+                "Range": 1.0,
+                "Resolution": 512,
+                "Strength": 1.0
+            },
+            "Reflections": {
+                "DebugView": 0,
+                "EdgeFade": 0.07999999821186066,
+                "Materials": [],
+                "MaxDistance": 1500.0,
+                "MaxSteps": 40,
+                "Mode": "Off",
+                "RoughnessBias": 0.0,
+                "Strength": 0.6499999761581421,
+                "Thickness": 8.0,
+                "Water": true
+            },
+            "SurfaceLighting": "Native",
+            "Toon": {
+                "BandSoftness": 0.2280000001192093,
+                "CustomLightBands": false,
+                "LightBandLevels": [
+                    0.0,
+                    0.3333333432674408,
+                    0.6666666865348816,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "LightBandThresholds": [
+                    0.1666666716337204,
+                    0.5,
+                    0.8333333134651184,
+                    1.0,
+                    1.0
+                ],
+                "LightBands": 4,
+                "Mode": "Off",
+                "OutlineDepthSensitivity": 1.0,
+                "OutlineEnabled": false,
+                "OutlineNormalSensitivity": 1.0,
+                "OutlineOpacity": 0.8500000238418579,
+                "OutlineSoftness": 1.0,
+                "OutlineTint": [
+                    0.029999999329447746,
+                    0.03999999910593033,
+                    0.05999999865889549
+                ],
+                "OutlineWidth": 1.25,
+                "RimStrength": 0.3400000035762787,
+                "RimTint": [
+                    1.0,
+                    0.9300000071525574,
+                    0.7200000286102295
+                ],
+                "RimWidth": 3.1700000762939453,
+                "Saturation": 1.090000033378601,
+                "ShadowStrength": 1.0,
+                "ShadowTint": [
+                    0.47999998927116394,
+                    0.5600000023841858,
+                    0.7200000286102295
+                ]
+            }
+        },
+        "FrameRate": {
+            "Mode": "Original30"
+        },
+        "Grass": {
+            "Appearance": {
+                "BladeCurvature": 0.6399999856948853,
+                "BladeDroop": 0.3499999940395355,
+                "BladeSegments": 5,
+                "BladeTwistDegrees": 141.0,
+                "HeightScale": 1.149999976158142,
+                "ReceiveFog": true,
+                "ReceiveLighting": true,
+                "RootColor": [
+                    0.09882351756095886,
+                    0.1899999976158142,
+                    0.03500000014901161
+                ],
+                "ShapeVariation": 0.3799999952316284,
+                "TextureColorInfluence": 0.2199999988079071,
+                "TextureRootBrightness": 2.869999885559082,
+                "TextureTipBrightness": 4.0,
+                "TipColor": [
+                    0.4200000464916229,
+                    0.7200000286102295,
+                    0.12000001966953278
+                ],
+                "ToonRimEnabled": true,
+                "ToonRimFadeEnd": 800.0,
+                "ToonRimFadeStart": 200.0
+            },
+            "Budget": {
+                "DrawDistance": 50000.0,
+                "MaxInstancesPerRoom": 500000
+            },
+            "Generation": {
+                "BladeHeightMax": 12.510000228881836,
+                "BladeHeightMin": 7.679999828338623,
+                "BladeWidthMax": 1.940000057220459,
+                "BladeWidthMin": 1.7999999523162842,
+                "ClusterCoverage": 0.6499999761581421,
+                "ClusterScale": 300.0,
+                "ClusterStrength": 0.0,
+                "IndividualRandomness": 0.0,
+                "InstancesPerSquareMeter": 1048.800048828125,
+                "MinimumSpacing": 0.6000000238418579,
+                "Seed": 1
+            },
+            "LinkInteraction": {
+                "ColliderHeightMultiplier": 1.690000057220459,
+                "ColliderRadiusMultiplier": 1.190000057220459,
+                "CollisionPush": 1.659999966621399,
+                "Damping": 1.4600000381469727,
+                "FieldRadius": 600.0,
+                "FieldResolution": 256,
+                "MaximumBend": 0.8500000238418579,
+                "RecoverySeconds": 1.0,
+                "VelocityResponse": 0.8700000047683716,
+                "VerticalMargin": 69.0
+            },
+            "Masks": [],
+            "Performance": {
+                "CullingClusterSize": 25.0,
+                "DensityFadeFraction": 1.0,
+                "DrawFadeFraction": 0.15000000596046448,
+                "FarBladeSegments": 1,
+                "FarDensity": 1.0,
+                "FarTuftBladeCount": 4,
+                "FarTuftDensity": 2.0,
+                "FarTuftSpread": 1.0,
+                "FarTuftsEnabled": false,
+                "FrustumCulling": true,
+                "LodEndFraction": 0.3199999928474426,
+                "LodReferenceDistance": 2282.0,
+                "LodStartFraction": 0.3199999928474426,
+                "MidrangeAdaptiveCapacity": 128,
+                "MidrangeAdaptiveEnabled": false,
+                "MidrangeClusterCellExtent": 22.0,
+                "MidrangeClustersEnabled": false,
+                "MidrangeFarBladeFraction": 0.25,
+                "SegmentLodEndDistance": 1000.0,
+                "SegmentLodSoftness": 0.75,
+                "SegmentLodStartDistance": 501.0,
+                "TuftTransitionFraction": 0.47999998927116394
+            },
+            "Quality": "Custom",
+            "Sources": [
+                {
+                    "ActiveRects": [],
+                    "Channel": "Green",
+                    "InputBlack": 0.0,
+                    "InputWhite": 0.25200000405311584,
+                    "Invert": false,
+                    "MaximumSlopeDegrees": 65.0,
+                    "NormalOffset": -0.15000000596046448,
+                    "OutputBlack": 0.0,
+                    "OutputWhite": 1.0,
+                    "ResponseExponent": 8.0,
+                    "RuleId": 1,
+                    "Target": {
+                        "AssetName": "",
+                        "Height": 256,
+                        "MapperSlotMask": 7,
+                        "Rgba8Hash": "be15aff93dfdcd88",
+                        "Width": 256
+                    },
+                    "Wrap": "Material"
+                },
+                {
+                    "ActiveRects": [],
+                    "Channel": "Green",
+                    "InputBlack": 0.7590000033378601,
+                    "InputWhite": 0.8360000252723694,
+                    "Invert": true,
+                    "MaximumSlopeDegrees": 48.0,
+                    "NormalOffset": 0.5,
+                    "OutputBlack": 0.0,
+                    "OutputWhite": 1.0,
+                    "ResponseExponent": 1.0,
+                    "RuleId": 2,
+                    "Target": {
+                        "AssetName": "",
+                        "Height": 128,
+                        "MapperSlotMask": 7,
+                        "Rgba8Hash": "2321986eb9820c29",
+                        "Width": 128
+                    },
+                    "Wrap": "Material"
+                },
+                {
+                    "ActiveRects": [],
+                    "Channel": "Green",
+                    "InputBlack": 0.0,
+                    "InputWhite": 0.5720000267028809,
+                    "Invert": false,
+                    "MaximumSlopeDegrees": 48.0,
+                    "NormalOffset": 0.5,
+                    "OutputBlack": 0.0,
+                    "OutputWhite": 1.0,
+                    "ResponseExponent": 8.0,
+                    "RuleId": 3,
+                    "Target": {
+                        "AssetName": "",
+                        "Height": 256,
+                        "MapperSlotMask": 7,
+                        "Rgba8Hash": "4b8941fd174516b0",
+                        "Width": 256
+                    },
+                    "Wrap": "Material"
+                },
+                {
+                    "ActiveRects": [],
+                    "Channel": "Green",
+                    "InputBlack": 0.48399999737739563,
+                    "InputWhite": 0.48500001430511475,
+                    "Invert": true,
+                    "MaximumSlopeDegrees": 48.0,
+                    "NormalOffset": 0.5,
+                    "OutputBlack": 0.0,
+                    "OutputWhite": 1.0,
+                    "ResponseExponent": 8.0,
+                    "RuleId": 4,
+                    "Target": {
+                        "AssetName": "",
+                        "Height": 256,
+                        "MapperSlotMask": 7,
+                        "Rgba8Hash": "0a29e93a3b0742b3",
+                        "Width": 256
+                    },
+                    "Wrap": "Material"
+                },
+                {
+                    "ActiveRects": [],
+                    "Channel": "Green",
+                    "InputBlack": 0.49799999594688416,
+                    "InputWhite": 0.49900001287460327,
+                    "Invert": true,
+                    "MaximumSlopeDegrees": 48.0,
+                    "NormalOffset": 0.5,
+                    "OutputBlack": 0.0,
+                    "OutputWhite": 1.0,
+                    "ResponseExponent": 8.0,
+                    "RuleId": 5,
+                    "Target": {
+                        "AssetName": "",
+                        "Height": 128,
+                        "MapperSlotMask": 7,
+                        "Rgba8Hash": "bd769b9ce136d73a",
+                        "Width": 256
+                    },
+                    "Wrap": "Material"
+                },
+                {
+                    "ActiveRects": [],
+                    "Channel": "Green",
+                    "InputBlack": 0.503000020980835,
+                    "InputWhite": 0.5040000081062317,
+                    "Invert": true,
+                    "MaximumSlopeDegrees": 48.0,
+                    "NormalOffset": 0.5,
+                    "OutputBlack": 0.0,
+                    "OutputWhite": 1.0,
+                    "ResponseExponent": 8.0,
+                    "RuleId": 6,
+                    "Target": {
+                        "AssetName": "",
+                        "Height": 128,
+                        "MapperSlotMask": 7,
+                        "Rgba8Hash": "d13528cd4896c851",
+                        "Width": 128
+                    },
+                    "Wrap": "Material"
+                },
+                {
+                    "ActiveRects": [],
+                    "Channel": "Green",
+                    "InputBlack": 0.3499999940395355,
+                    "InputWhite": 0.45899999141693115,
+                    "Invert": false,
+                    "MaximumSlopeDegrees": 48.0,
+                    "NormalOffset": 0.5,
+                    "OutputBlack": 0.0,
+                    "OutputWhite": 1.0,
+                    "ResponseExponent": 1.0,
+                    "RuleId": 8,
+                    "Target": {
+                        "AssetName": "",
+                        "Height": 256,
+                        "MapperSlotMask": 7,
+                        "Rgba8Hash": "98d219f9acce7e31",
+                        "Width": 256
+                    },
+                    "Wrap": "Material"
+                },
+                {
+                    "ActiveRects": [],
+                    "Channel": "Green",
+                    "InputBlack": 0.46000000834465027,
+                    "InputWhite": 0.6399999856948853,
+                    "Invert": true,
+                    "MaximumSlopeDegrees": 48.0,
+                    "NormalOffset": 0.5,
+                    "OutputBlack": 0.0,
+                    "OutputWhite": 1.0,
+                    "ResponseExponent": 0.05000000074505806,
+                    "RuleId": 9,
+                    "Target": {
+                        "AssetName": "",
+                        "Height": 256,
+                        "MapperSlotMask": 7,
+                        "Rgba8Hash": "cc0f3ad3756aa28b",
+                        "Width": 256
+                    },
+                    "Wrap": "Material"
+                },
+                {
+                    "ActiveRects": [],
+                    "Channel": "Luminance",
+                    "InputBlack": 0.6399999856948853,
+                    "InputWhite": 0.8420000076293945,
+                    "Invert": true,
+                    "MaximumSlopeDegrees": 48.0,
+                    "NormalOffset": 0.5,
+                    "OutputBlack": 0.0,
+                    "OutputWhite": 1.0,
+                    "ResponseExponent": 8.0,
+                    "RuleId": 10,
+                    "Target": {
+                        "AssetName": "",
+                        "Height": 256,
+                        "MapperSlotMask": 7,
+                        "Rgba8Hash": "7a41e65008d2ea50",
+                        "Width": 256
+                    },
+                    "Wrap": "Material"
+                },
+                {
+                    "ActiveRects": [],
+                    "Channel": "Luminance",
+                    "InputBlack": 0.5879999995231628,
+                    "InputWhite": 0.8199999928474426,
+                    "Invert": true,
+                    "MaximumSlopeDegrees": 48.0,
+                    "NormalOffset": 0.5,
+                    "OutputBlack": 0.0,
+                    "OutputWhite": 1.0,
+                    "ResponseExponent": 8.0,
+                    "RuleId": 11,
+                    "Target": {
+                        "AssetName": "",
+                        "Height": 256,
+                        "MapperSlotMask": 7,
+                        "Rgba8Hash": "abc341818083dec7",
+                        "Width": 256
+                    },
+                    "Wrap": "Material"
+                },
+                {
+                    "ActiveRects": [],
+                    "Channel": "Luminance",
+                    "InputBlack": 0.5830000042915344,
+                    "InputWhite": 0.6600000262260437,
+                    "Invert": true,
+                    "MaximumSlopeDegrees": 48.0,
+                    "NormalOffset": 0.5,
+                    "OutputBlack": 0.0,
+                    "OutputWhite": 1.0,
+                    "ResponseExponent": 2.0299999713897705,
+                    "RuleId": 12,
+                    "Target": {
+                        "AssetName": "",
+                        "Height": 256,
+                        "MapperSlotMask": 7,
+                        "Rgba8Hash": "a580b32083237f97",
+                        "Width": 256
+                    },
+                    "Wrap": "Material"
+                },
+                {
+                    "ActiveRects": [],
+                    "Channel": "Green",
+                    "InputBlack": 0.5009999871253967,
+                    "InputWhite": 0.6119999885559082,
+                    "Invert": false,
+                    "MaximumSlopeDegrees": 48.0,
+                    "NormalOffset": 0.5,
+                    "OutputBlack": 0.0,
+                    "OutputWhite": 1.0,
+                    "ResponseExponent": 3.630000114440918,
+                    "RuleId": 13,
+                    "Target": {
+                        "AssetName": "",
+                        "Height": 256,
+                        "MapperSlotMask": 7,
+                        "Rgba8Hash": "887ffba709e21b96",
+                        "Width": 256
+                    },
+                    "Wrap": "Material"
+                },
+                {
+                    "ActiveRects": [],
+                    "Channel": "Green",
+                    "InputBlack": 0.6539999842643738,
+                    "InputWhite": 0.9359999895095825,
+                    "Invert": true,
+                    "MaximumSlopeDegrees": 48.0,
+                    "NormalOffset": 0.5,
+                    "OutputBlack": 0.0,
+                    "OutputWhite": 1.0,
+                    "ResponseExponent": 0.05000000074505806,
+                    "RuleId": 14,
+                    "Target": {
+                        "AssetName": "",
+                        "Height": 128,
+                        "MapperSlotMask": 7,
+                        "Rgba8Hash": "fa7cfd29f3dcdaba",
+                        "Width": 256
+                    },
+                    "Wrap": "Material"
+                },
+                {
+                    "ActiveRects": [],
+                    "Channel": "Green",
+                    "InputBlack": 0.5019999742507935,
+                    "InputWhite": 0.6140000224113464,
+                    "Invert": false,
+                    "MaximumSlopeDegrees": 48.0,
+                    "NormalOffset": 0.5,
+                    "OutputBlack": 0.0,
+                    "OutputWhite": 1.0,
+                    "ResponseExponent": 8.0,
+                    "RuleId": 15,
+                    "Target": {
+                        "AssetName": "",
+                        "Height": 256,
+                        "MapperSlotMask": 7,
+                        "Rgba8Hash": "c62b9d278e8bd285",
+                        "Width": 128
+                    },
+                    "Wrap": "Material"
+                },
+                {
+                    "ActiveRects": [],
+                    "Channel": "Blue",
+                    "InputBlack": 0.8230000138282776,
+                    "InputWhite": 0.8240000009536743,
+                    "Invert": true,
+                    "MaximumSlopeDegrees": 48.0,
+                    "NormalOffset": 0.5,
+                    "OutputBlack": 0.0,
+                    "OutputWhite": 1.0,
+                    "ResponseExponent": 0.05000000074505806,
+                    "RuleId": 16,
+                    "Target": {
+                        "AssetName": "",
+                        "Height": 256,
+                        "MapperSlotMask": 7,
+                        "Rgba8Hash": "a35e3fe6f83ca9c2",
+                        "Width": 128
+                    },
+                    "Wrap": "Material"
+                },
+                {
+                    "ActiveRects": [],
+                    "Channel": "Green",
+                    "InputBlack": 0.43799999356269836,
+                    "InputWhite": 0.4390000104904175,
+                    "Invert": false,
+                    "MaximumSlopeDegrees": 48.0,
+                    "NormalOffset": 0.5,
+                    "OutputBlack": 0.0,
+                    "OutputWhite": 1.0,
+                    "ResponseExponent": 3.6600000858306885,
+                    "RuleId": 17,
+                    "Target": {
+                        "AssetName": "",
+                        "Height": 128,
+                        "MapperSlotMask": 7,
+                        "Rgba8Hash": "d19ab95b18fb3495",
+                        "Width": 128
+                    },
+                    "Wrap": "Material"
+                },
+                {
+                    "ActiveRects": [],
+                    "Channel": "Green",
+                    "InputBlack": 0.7350000143051147,
+                    "InputWhite": 0.8330000042915344,
+                    "Invert": true,
+                    "MaximumSlopeDegrees": 48.0,
+                    "NormalOffset": 0.5,
+                    "OutputBlack": 0.0,
+                    "OutputWhite": 1.0,
+                    "ResponseExponent": 8.0,
+                    "RuleId": 18,
+                    "Target": {
+                        "AssetName": "",
+                        "Height": 128,
+                        "MapperSlotMask": 7,
+                        "Rgba8Hash": "a475bf5c5bbd4ff8",
+                        "Width": 128
+                    },
+                    "Wrap": "Material"
+                },
+                {
+                    "ActiveRects": [],
+                    "Channel": "Green",
+                    "InputBlack": 0.45500001311302185,
+                    "InputWhite": 1.0,
+                    "Invert": true,
+                    "MaximumSlopeDegrees": 48.0,
+                    "NormalOffset": 0.5,
+                    "OutputBlack": 0.0,
+                    "OutputWhite": 1.0,
+                    "ResponseExponent": 0.05000000074505806,
+                    "RuleId": 19,
+                    "Target": {
+                        "AssetName": "",
+                        "Height": 128,
+                        "MapperSlotMask": 7,
+                        "Rgba8Hash": "4e80b26cfb20ea87",
+                        "Width": 128
+                    },
+                    "Wrap": "Material"
+                },
+                {
+                    "ActiveRects": [],
+                    "Channel": "Luminance",
+                    "InputBlack": 0.5730000138282776,
+                    "InputWhite": 0.6259999871253967,
+                    "Invert": true,
+                    "MaximumSlopeDegrees": 48.0,
+                    "NormalOffset": 0.5,
+                    "OutputBlack": 0.0,
+                    "OutputWhite": 0.5659999847412109,
+                    "ResponseExponent": 0.05000000074505806,
+                    "RuleId": 20,
+                    "Target": {
+                        "AssetName": "",
+                        "Height": 256,
+                        "MapperSlotMask": 7,
+                        "Rgba8Hash": "72471d7a6540e0cc",
+                        "Width": 256
+                    },
+                    "Wrap": "Material"
+                },
+                {
+                    "ActiveRects": [],
+                    "Channel": "Luminance",
+                    "InputBlack": 0.6549999713897705,
+                    "InputWhite": 0.656000018119812,
+                    "Invert": true,
+                    "MaximumSlopeDegrees": 48.0,
+                    "NormalOffset": 0.5,
+                    "OutputBlack": 0.0,
+                    "OutputWhite": 1.0,
+                    "ResponseExponent": 8.0,
+                    "RuleId": 21,
+                    "Target": {
+                        "AssetName": "",
+                        "Height": 256,
+                        "MapperSlotMask": 7,
+                        "Rgba8Hash": "c09d75caf61cc19c",
+                        "Width": 256
+                    },
+                    "Wrap": "Material"
+                },
+                {
+                    "ActiveRects": [],
+                    "Channel": "Blue",
+                    "InputBlack": 0.859000027179718,
+                    "InputWhite": 0.8600000143051147,
+                    "Invert": true,
+                    "MaximumSlopeDegrees": 48.0,
+                    "NormalOffset": 0.5,
+                    "OutputBlack": 0.0,
+                    "OutputWhite": 1.0,
+                    "ResponseExponent": 8.0,
+                    "RuleId": 22,
+                    "Target": {
+                        "AssetName": "",
+                        "Height": 256,
+                        "MapperSlotMask": 7,
+                        "Rgba8Hash": "62d5ae1053b31e2e",
+                        "Width": 256
+                    },
+                    "Wrap": "Material"
+                },
+                {
+                    "ActiveRects": [],
+                    "Channel": "Green",
+                    "InputBlack": 0.5270000100135803,
+                    "InputWhite": 0.5569999814033508,
+                    "Invert": false,
+                    "MaximumSlopeDegrees": 48.0,
+                    "NormalOffset": 0.5,
+                    "OutputBlack": 0.0,
+                    "OutputWhite": 1.0,
+                    "ResponseExponent": 8.0,
+                    "RuleId": 23,
+                    "Target": {
+                        "AssetName": "",
+                        "Height": 256,
+                        "MapperSlotMask": 7,
+                        "Rgba8Hash": "7e5075b79d5c5dcd",
+                        "Width": 256
+                    },
+                    "Wrap": "Material"
+                },
+                {
+                    "ActiveRects": [],
+                    "Channel": "Green",
+                    "InputBlack": 0.0,
+                    "InputWhite": 0.5879999995231628,
+                    "Invert": false,
+                    "MaximumSlopeDegrees": 48.0,
+                    "NormalOffset": 0.5,
+                    "OutputBlack": 0.0,
+                    "OutputWhite": 1.0,
+                    "ResponseExponent": 8.0,
+                    "RuleId": 24,
+                    "Target": {
+                        "AssetName": "",
+                        "Height": 128,
+                        "MapperSlotMask": 7,
+                        "Rgba8Hash": "86f3d2415641fc84",
+                        "Width": 256
+                    },
+                    "Wrap": "Material"
+                },
+                {
+                    "ActiveRects": [
+                        [
+                            0.5,
+                            0.0,
+                            1.0,
+                            0.5
+                        ]
+                    ],
+                    "Channel": "Luminance",
+                    "InputBlack": 0.6470000147819519,
+                    "InputWhite": 0.800000011920929,
+                    "Invert": true,
+                    "MaximumSlopeDegrees": 48.0,
+                    "NormalOffset": 0.5,
+                    "OutputBlack": 0.0,
+                    "OutputWhite": 1.0,
+                    "ResponseExponent": 2.0399999618530273,
+                    "RuleId": 25,
+                    "Target": {
+                        "AssetName": "",
+                        "Height": 128,
+                        "MapperSlotMask": 7,
+                        "Rgba8Hash": "14dd64ec10e5bbd6",
+                        "Width": 256
+                    },
+                    "Wrap": "Material"
+                },
+                {
+                    "ActiveRects": [],
+                    "Channel": "Green",
+                    "InputBlack": 0.35499998927116394,
+                    "InputWhite": 0.46700000762939453,
+                    "Invert": true,
+                    "MaximumSlopeDegrees": 48.0,
+                    "NormalOffset": 0.5,
+                    "OutputBlack": 0.0,
+                    "OutputWhite": 1.0,
+                    "ResponseExponent": 8.0,
+                    "RuleId": 7,
+                    "Target": {
+                        "AssetName": "",
+                        "Height": 256,
+                        "MapperSlotMask": 7,
+                        "Rgba8Hash": "8bbe4b35b0af27a9",
+                        "Width": 256
+                    },
+                    "Wrap": "Material"
+                }
+            ],
+            "Wind": {
+                "DirectionDegrees": 0.0,
+                "GustFrequency": 0.3499999940395355,
+                "GustStrength": 0.3499999940395355,
+                "Randomness": 0.4399999976158142,
+                "SpatialScale": 1.0,
+                "Speed": 2.8399999141693115,
+                "Strength": 0.5600000023841858,
+                "Turbulence": 0.41999998688697815
+            }
+        },
+        "GrassSavedPreset": {
+            "Appearance": {
+                "BladeCurvature": 0.6399999856948853,
+                "BladeDroop": 0.3499999940395355,
+                "BladeSegments": 5,
+                "BladeTwistDegrees": 141.0,
+                "HeightScale": 1.149999976158142,
+                "ReceiveFog": true,
+                "ReceiveLighting": true,
+                "RootColor": [
+                    0.09882351756095886,
+                    0.1899999976158142,
+                    0.03500000014901161
+                ],
+                "ShapeVariation": 0.3799999952316284,
+                "TextureColorInfluence": 0.2199999988079071,
+                "TextureRootBrightness": 2.869999885559082,
+                "TextureTipBrightness": 4.0,
+                "TipColor": [
+                    0.4200000464916229,
+                    0.7200000286102295,
+                    0.12000001966953278
+                ],
+                "ToonRimEnabled": true,
+                "ToonRimFadeEnd": 800.0,
+                "ToonRimFadeStart": 200.0
+            },
+            "Budget": {
+                "DrawDistance": 50000.0,
+                "MaxInstancesPerRoom": 500000
+            },
+            "Generation": {
+                "BladeHeightMax": 12.510000228881836,
+                "BladeHeightMin": 7.679999828338623,
+                "BladeWidthMax": 1.940000057220459,
+                "BladeWidthMin": 1.7999999523162842,
+                "ClusterCoverage": 0.6499999761581421,
+                "ClusterScale": 300.0,
+                "ClusterStrength": 0.0,
+                "IndividualRandomness": 0.0,
+                "InstancesPerSquareMeter": 1048.800048828125,
+                "MinimumSpacing": 0.6000000238418579,
+                "Seed": 1
+            },
+            "LinkInteraction": {
+                "ColliderHeightMultiplier": 1.690000057220459,
+                "ColliderRadiusMultiplier": 1.190000057220459,
+                "CollisionPush": 1.659999966621399,
+                "Damping": 1.4600000381469727,
+                "FieldRadius": 600.0,
+                "FieldResolution": 256,
+                "MaximumBend": 0.8500000238418579,
+                "RecoverySeconds": 1.0,
+                "VelocityResponse": 0.8700000047683716,
+                "VerticalMargin": 69.0
+            },
+            "Masks": [],
+            "Performance": {
+                "CullingClusterSize": 25.0,
+                "DensityFadeFraction": 1.0,
+                "DrawFadeFraction": 0.15000000596046448,
+                "FarBladeSegments": 1,
+                "FarDensity": 1.0,
+                "FarTuftBladeCount": 4,
+                "FarTuftDensity": 2.0,
+                "FarTuftSpread": 1.0,
+                "FarTuftsEnabled": true,
+                "FrustumCulling": true,
+                "LodEndFraction": 0.3199999928474426,
+                "LodReferenceDistance": 2282.0,
+                "LodStartFraction": 0.3199999928474426,
+                "MidrangeAdaptiveCapacity": 128,
+                "MidrangeAdaptiveEnabled": false,
+                "MidrangeClusterCellExtent": 22.0,
+                "MidrangeClustersEnabled": false,
+                "MidrangeFarBladeFraction": 0.25,
+                "SegmentLodEndDistance": 1000.0,
+                "SegmentLodSoftness": 0.75,
+                "SegmentLodStartDistance": 501.0,
+                "TuftTransitionFraction": 0.47999998927116394
+            },
+            "Quality": "Custom",
+            "Sources": [
+                {
+                    "ActiveRects": [],
+                    "Channel": "Green",
+                    "InputBlack": 0.0,
+                    "InputWhite": 0.25200000405311584,
+                    "Invert": false,
+                    "MaximumSlopeDegrees": 65.0,
+                    "NormalOffset": -0.15000000596046448,
+                    "OutputBlack": 0.0,
+                    "OutputWhite": 1.0,
+                    "ResponseExponent": 8.0,
+                    "RuleId": 1,
+                    "Target": {
+                        "AssetName": "",
+                        "Height": 256,
+                        "MapperSlotMask": 7,
+                        "Rgba8Hash": "be15aff93dfdcd88",
+                        "Width": 256
+                    },
+                    "Wrap": "Material"
+                },
+                {
+                    "ActiveRects": [],
+                    "Channel": "Green",
+                    "InputBlack": 0.7590000033378601,
+                    "InputWhite": 0.8360000252723694,
+                    "Invert": true,
+                    "MaximumSlopeDegrees": 48.0,
+                    "NormalOffset": 0.5,
+                    "OutputBlack": 0.0,
+                    "OutputWhite": 1.0,
+                    "ResponseExponent": 1.0,
+                    "RuleId": 2,
+                    "Target": {
+                        "AssetName": "",
+                        "Height": 128,
+                        "MapperSlotMask": 7,
+                        "Rgba8Hash": "2321986eb9820c29",
+                        "Width": 128
+                    },
+                    "Wrap": "Material"
+                },
+                {
+                    "ActiveRects": [],
+                    "Channel": "Green",
+                    "InputBlack": 0.0,
+                    "InputWhite": 0.5720000267028809,
+                    "Invert": false,
+                    "MaximumSlopeDegrees": 48.0,
+                    "NormalOffset": 0.5,
+                    "OutputBlack": 0.0,
+                    "OutputWhite": 1.0,
+                    "ResponseExponent": 8.0,
+                    "RuleId": 3,
+                    "Target": {
+                        "AssetName": "",
+                        "Height": 256,
+                        "MapperSlotMask": 7,
+                        "Rgba8Hash": "4b8941fd174516b0",
+                        "Width": 256
+                    },
+                    "Wrap": "Material"
+                },
+                {
+                    "ActiveRects": [],
+                    "Channel": "Green",
+                    "InputBlack": 0.48399999737739563,
+                    "InputWhite": 0.48500001430511475,
+                    "Invert": true,
+                    "MaximumSlopeDegrees": 48.0,
+                    "NormalOffset": 0.5,
+                    "OutputBlack": 0.0,
+                    "OutputWhite": 1.0,
+                    "ResponseExponent": 8.0,
+                    "RuleId": 4,
+                    "Target": {
+                        "AssetName": "",
+                        "Height": 256,
+                        "MapperSlotMask": 7,
+                        "Rgba8Hash": "0a29e93a3b0742b3",
+                        "Width": 256
+                    },
+                    "Wrap": "Material"
+                },
+                {
+                    "ActiveRects": [],
+                    "Channel": "Green",
+                    "InputBlack": 0.49799999594688416,
+                    "InputWhite": 0.49900001287460327,
+                    "Invert": true,
+                    "MaximumSlopeDegrees": 48.0,
+                    "NormalOffset": 0.5,
+                    "OutputBlack": 0.0,
+                    "OutputWhite": 1.0,
+                    "ResponseExponent": 8.0,
+                    "RuleId": 5,
+                    "Target": {
+                        "AssetName": "",
+                        "Height": 128,
+                        "MapperSlotMask": 7,
+                        "Rgba8Hash": "bd769b9ce136d73a",
+                        "Width": 256
+                    },
+                    "Wrap": "Material"
+                },
+                {
+                    "ActiveRects": [],
+                    "Channel": "Green",
+                    "InputBlack": 0.503000020980835,
+                    "InputWhite": 0.5040000081062317,
+                    "Invert": true,
+                    "MaximumSlopeDegrees": 48.0,
+                    "NormalOffset": 0.5,
+                    "OutputBlack": 0.0,
+                    "OutputWhite": 1.0,
+                    "ResponseExponent": 8.0,
+                    "RuleId": 6,
+                    "Target": {
+                        "AssetName": "",
+                        "Height": 128,
+                        "MapperSlotMask": 7,
+                        "Rgba8Hash": "d13528cd4896c851",
+                        "Width": 128
+                    },
+                    "Wrap": "Material"
+                },
+                {
+                    "ActiveRects": [],
+                    "Channel": "Green",
+                    "InputBlack": 0.3499999940395355,
+                    "InputWhite": 0.45899999141693115,
+                    "Invert": false,
+                    "MaximumSlopeDegrees": 48.0,
+                    "NormalOffset": 0.5,
+                    "OutputBlack": 0.0,
+                    "OutputWhite": 1.0,
+                    "ResponseExponent": 1.0,
+                    "RuleId": 8,
+                    "Target": {
+                        "AssetName": "",
+                        "Height": 256,
+                        "MapperSlotMask": 7,
+                        "Rgba8Hash": "98d219f9acce7e31",
+                        "Width": 256
+                    },
+                    "Wrap": "Material"
+                },
+                {
+                    "ActiveRects": [],
+                    "Channel": "Green",
+                    "InputBlack": 0.46000000834465027,
+                    "InputWhite": 0.6399999856948853,
+                    "Invert": true,
+                    "MaximumSlopeDegrees": 48.0,
+                    "NormalOffset": 0.5,
+                    "OutputBlack": 0.0,
+                    "OutputWhite": 1.0,
+                    "ResponseExponent": 0.05000000074505806,
+                    "RuleId": 9,
+                    "Target": {
+                        "AssetName": "",
+                        "Height": 256,
+                        "MapperSlotMask": 7,
+                        "Rgba8Hash": "cc0f3ad3756aa28b",
+                        "Width": 256
+                    },
+                    "Wrap": "Material"
+                },
+                {
+                    "ActiveRects": [],
+                    "Channel": "Luminance",
+                    "InputBlack": 0.6399999856948853,
+                    "InputWhite": 0.8420000076293945,
+                    "Invert": true,
+                    "MaximumSlopeDegrees": 48.0,
+                    "NormalOffset": 0.5,
+                    "OutputBlack": 0.0,
+                    "OutputWhite": 1.0,
+                    "ResponseExponent": 8.0,
+                    "RuleId": 10,
+                    "Target": {
+                        "AssetName": "",
+                        "Height": 256,
+                        "MapperSlotMask": 7,
+                        "Rgba8Hash": "7a41e65008d2ea50",
+                        "Width": 256
+                    },
+                    "Wrap": "Material"
+                },
+                {
+                    "ActiveRects": [],
+                    "Channel": "Luminance",
+                    "InputBlack": 0.5879999995231628,
+                    "InputWhite": 0.8199999928474426,
+                    "Invert": true,
+                    "MaximumSlopeDegrees": 48.0,
+                    "NormalOffset": 0.5,
+                    "OutputBlack": 0.0,
+                    "OutputWhite": 1.0,
+                    "ResponseExponent": 8.0,
+                    "RuleId": 11,
+                    "Target": {
+                        "AssetName": "",
+                        "Height": 256,
+                        "MapperSlotMask": 7,
+                        "Rgba8Hash": "abc341818083dec7",
+                        "Width": 256
+                    },
+                    "Wrap": "Material"
+                },
+                {
+                    "ActiveRects": [],
+                    "Channel": "Luminance",
+                    "InputBlack": 0.5830000042915344,
+                    "InputWhite": 0.6600000262260437,
+                    "Invert": true,
+                    "MaximumSlopeDegrees": 48.0,
+                    "NormalOffset": 0.5,
+                    "OutputBlack": 0.0,
+                    "OutputWhite": 1.0,
+                    "ResponseExponent": 2.0299999713897705,
+                    "RuleId": 12,
+                    "Target": {
+                        "AssetName": "",
+                        "Height": 256,
+                        "MapperSlotMask": 7,
+                        "Rgba8Hash": "a580b32083237f97",
+                        "Width": 256
+                    },
+                    "Wrap": "Material"
+                },
+                {
+                    "ActiveRects": [],
+                    "Channel": "Green",
+                    "InputBlack": 0.5009999871253967,
+                    "InputWhite": 0.6119999885559082,
+                    "Invert": false,
+                    "MaximumSlopeDegrees": 48.0,
+                    "NormalOffset": 0.5,
+                    "OutputBlack": 0.0,
+                    "OutputWhite": 1.0,
+                    "ResponseExponent": 3.630000114440918,
+                    "RuleId": 13,
+                    "Target": {
+                        "AssetName": "",
+                        "Height": 256,
+                        "MapperSlotMask": 7,
+                        "Rgba8Hash": "887ffba709e21b96",
+                        "Width": 256
+                    },
+                    "Wrap": "Material"
+                },
+                {
+                    "ActiveRects": [],
+                    "Channel": "Green",
+                    "InputBlack": 0.6539999842643738,
+                    "InputWhite": 0.9359999895095825,
+                    "Invert": true,
+                    "MaximumSlopeDegrees": 48.0,
+                    "NormalOffset": 0.5,
+                    "OutputBlack": 0.0,
+                    "OutputWhite": 1.0,
+                    "ResponseExponent": 0.05000000074505806,
+                    "RuleId": 14,
+                    "Target": {
+                        "AssetName": "",
+                        "Height": 128,
+                        "MapperSlotMask": 7,
+                        "Rgba8Hash": "fa7cfd29f3dcdaba",
+                        "Width": 256
+                    },
+                    "Wrap": "Material"
+                },
+                {
+                    "ActiveRects": [],
+                    "Channel": "Green",
+                    "InputBlack": 0.5019999742507935,
+                    "InputWhite": 0.6140000224113464,
+                    "Invert": false,
+                    "MaximumSlopeDegrees": 48.0,
+                    "NormalOffset": 0.5,
+                    "OutputBlack": 0.0,
+                    "OutputWhite": 1.0,
+                    "ResponseExponent": 8.0,
+                    "RuleId": 15,
+                    "Target": {
+                        "AssetName": "",
+                        "Height": 256,
+                        "MapperSlotMask": 7,
+                        "Rgba8Hash": "c62b9d278e8bd285",
+                        "Width": 128
+                    },
+                    "Wrap": "Material"
+                },
+                {
+                    "ActiveRects": [],
+                    "Channel": "Blue",
+                    "InputBlack": 0.8230000138282776,
+                    "InputWhite": 0.8240000009536743,
+                    "Invert": true,
+                    "MaximumSlopeDegrees": 48.0,
+                    "NormalOffset": 0.5,
+                    "OutputBlack": 0.0,
+                    "OutputWhite": 1.0,
+                    "ResponseExponent": 0.05000000074505806,
+                    "RuleId": 16,
+                    "Target": {
+                        "AssetName": "",
+                        "Height": 256,
+                        "MapperSlotMask": 7,
+                        "Rgba8Hash": "a35e3fe6f83ca9c2",
+                        "Width": 128
+                    },
+                    "Wrap": "Material"
+                },
+                {
+                    "ActiveRects": [],
+                    "Channel": "Green",
+                    "InputBlack": 0.43799999356269836,
+                    "InputWhite": 0.4390000104904175,
+                    "Invert": false,
+                    "MaximumSlopeDegrees": 48.0,
+                    "NormalOffset": 0.5,
+                    "OutputBlack": 0.0,
+                    "OutputWhite": 1.0,
+                    "ResponseExponent": 3.6600000858306885,
+                    "RuleId": 17,
+                    "Target": {
+                        "AssetName": "",
+                        "Height": 128,
+                        "MapperSlotMask": 7,
+                        "Rgba8Hash": "d19ab95b18fb3495",
+                        "Width": 128
+                    },
+                    "Wrap": "Material"
+                },
+                {
+                    "ActiveRects": [],
+                    "Channel": "Green",
+                    "InputBlack": 0.7350000143051147,
+                    "InputWhite": 0.8330000042915344,
+                    "Invert": true,
+                    "MaximumSlopeDegrees": 48.0,
+                    "NormalOffset": 0.5,
+                    "OutputBlack": 0.0,
+                    "OutputWhite": 1.0,
+                    "ResponseExponent": 8.0,
+                    "RuleId": 18,
+                    "Target": {
+                        "AssetName": "",
+                        "Height": 128,
+                        "MapperSlotMask": 7,
+                        "Rgba8Hash": "a475bf5c5bbd4ff8",
+                        "Width": 128
+                    },
+                    "Wrap": "Material"
+                },
+                {
+                    "ActiveRects": [],
+                    "Channel": "Green",
+                    "InputBlack": 0.45500001311302185,
+                    "InputWhite": 1.0,
+                    "Invert": true,
+                    "MaximumSlopeDegrees": 48.0,
+                    "NormalOffset": 0.5,
+                    "OutputBlack": 0.0,
+                    "OutputWhite": 1.0,
+                    "ResponseExponent": 0.05000000074505806,
+                    "RuleId": 19,
+                    "Target": {
+                        "AssetName": "",
+                        "Height": 128,
+                        "MapperSlotMask": 7,
+                        "Rgba8Hash": "4e80b26cfb20ea87",
+                        "Width": 128
+                    },
+                    "Wrap": "Material"
+                },
+                {
+                    "ActiveRects": [],
+                    "Channel": "Luminance",
+                    "InputBlack": 0.5730000138282776,
+                    "InputWhite": 0.6259999871253967,
+                    "Invert": true,
+                    "MaximumSlopeDegrees": 48.0,
+                    "NormalOffset": 0.5,
+                    "OutputBlack": 0.0,
+                    "OutputWhite": 0.5659999847412109,
+                    "ResponseExponent": 0.05000000074505806,
+                    "RuleId": 20,
+                    "Target": {
+                        "AssetName": "",
+                        "Height": 256,
+                        "MapperSlotMask": 7,
+                        "Rgba8Hash": "72471d7a6540e0cc",
+                        "Width": 256
+                    },
+                    "Wrap": "Material"
+                },
+                {
+                    "ActiveRects": [],
+                    "Channel": "Luminance",
+                    "InputBlack": 0.6549999713897705,
+                    "InputWhite": 0.656000018119812,
+                    "Invert": true,
+                    "MaximumSlopeDegrees": 48.0,
+                    "NormalOffset": 0.5,
+                    "OutputBlack": 0.0,
+                    "OutputWhite": 1.0,
+                    "ResponseExponent": 8.0,
+                    "RuleId": 21,
+                    "Target": {
+                        "AssetName": "",
+                        "Height": 256,
+                        "MapperSlotMask": 7,
+                        "Rgba8Hash": "c09d75caf61cc19c",
+                        "Width": 256
+                    },
+                    "Wrap": "Material"
+                },
+                {
+                    "ActiveRects": [],
+                    "Channel": "Blue",
+                    "InputBlack": 0.859000027179718,
+                    "InputWhite": 0.8600000143051147,
+                    "Invert": true,
+                    "MaximumSlopeDegrees": 48.0,
+                    "NormalOffset": 0.5,
+                    "OutputBlack": 0.0,
+                    "OutputWhite": 1.0,
+                    "ResponseExponent": 8.0,
+                    "RuleId": 22,
+                    "Target": {
+                        "AssetName": "",
+                        "Height": 256,
+                        "MapperSlotMask": 7,
+                        "Rgba8Hash": "62d5ae1053b31e2e",
+                        "Width": 256
+                    },
+                    "Wrap": "Material"
+                },
+                {
+                    "ActiveRects": [],
+                    "Channel": "Green",
+                    "InputBlack": 0.5270000100135803,
+                    "InputWhite": 0.5569999814033508,
+                    "Invert": false,
+                    "MaximumSlopeDegrees": 48.0,
+                    "NormalOffset": 0.5,
+                    "OutputBlack": 0.0,
+                    "OutputWhite": 1.0,
+                    "ResponseExponent": 8.0,
+                    "RuleId": 23,
+                    "Target": {
+                        "AssetName": "",
+                        "Height": 256,
+                        "MapperSlotMask": 7,
+                        "Rgba8Hash": "7e5075b79d5c5dcd",
+                        "Width": 256
+                    },
+                    "Wrap": "Material"
+                },
+                {
+                    "ActiveRects": [],
+                    "Channel": "Green",
+                    "InputBlack": 0.0,
+                    "InputWhite": 0.5879999995231628,
+                    "Invert": false,
+                    "MaximumSlopeDegrees": 48.0,
+                    "NormalOffset": 0.5,
+                    "OutputBlack": 0.0,
+                    "OutputWhite": 1.0,
+                    "ResponseExponent": 8.0,
+                    "RuleId": 24,
+                    "Target": {
+                        "AssetName": "",
+                        "Height": 128,
+                        "MapperSlotMask": 7,
+                        "Rgba8Hash": "86f3d2415641fc84",
+                        "Width": 256
+                    },
+                    "Wrap": "Material"
+                },
+                {
+                    "ActiveRects": [
+                        [
+                            0.5,
+                            0.0,
+                            1.0,
+                            0.5
+                        ]
+                    ],
+                    "Channel": "Luminance",
+                    "InputBlack": 0.6470000147819519,
+                    "InputWhite": 0.800000011920929,
+                    "Invert": true,
+                    "MaximumSlopeDegrees": 48.0,
+                    "NormalOffset": 0.5,
+                    "OutputBlack": 0.0,
+                    "OutputWhite": 1.0,
+                    "ResponseExponent": 2.0399999618530273,
+                    "RuleId": 25,
+                    "Target": {
+                        "AssetName": "",
+                        "Height": 128,
+                        "MapperSlotMask": 7,
+                        "Rgba8Hash": "14dd64ec10e5bbd6",
+                        "Width": 256
+                    },
+                    "Wrap": "Material"
+                },
+                {
+                    "ActiveRects": [],
+                    "Channel": "Green",
+                    "InputBlack": 0.35499998927116394,
+                    "InputWhite": 0.46700000762939453,
+                    "Invert": true,
+                    "MaximumSlopeDegrees": 48.0,
+                    "NormalOffset": 0.5,
+                    "OutputBlack": 0.0,
+                    "OutputWhite": 1.0,
+                    "ResponseExponent": 8.0,
+                    "RuleId": 7,
+                    "Target": {
+                        "AssetName": "",
+                        "Height": 256,
+                        "MapperSlotMask": 7,
+                        "Rgba8Hash": "8bbe4b35b0af27a9",
+                        "Width": 256
+                    },
+                    "Wrap": "Material"
+                }
+            ],
+            "Wind": {
+                "DirectionDegrees": 0.0,
+                "GustFrequency": 0.3499999940395355,
+                "GustStrength": 0.3499999940395355,
+                "Randomness": 0.4399999976158142,
+                "SpatialScale": 1.0,
+                "Speed": 2.8399999141693115,
+                "Strength": 0.5600000023841858,
+                "Turbulence": 0.41999998688697815
+            }
+        },
+        "Output": {
+            "Height": 1080,
+            "RefreshRate": 60,
+            "Width": 1920
+        },
+        "Presentation": {
+            "VSync": true
+        },
+        "Preset": "Custom",
+        "RenderScale": 1.0,
+        "SchemaVersion": 15,
+        "TexturePacks": {
+            "Azahar": {
+                "DumpDirectory": "",
+                "DumpTextures": false,
+                "LoadCustomTextures": true,
+                "LoadDirectory": "/app0/triaevum/textures"
+            }
+        },
+        "Window": {
+            "Display": 0,
+            "Mode": "Windowed"
+        }
+    },
+    "Window": {
+        "AudioBackend": "sdl",
+        "Backend": {
+            "Id": 4,
+            "Name": "Vulkan (OOT3D)"
+        },
+        "Fullscreen": {
+            "Enabled": false
+        },
+        "Height": 1080,
+        "PositionX": 0,
+        "PositionY": 0,
+        "Width": 1920
+    }
+}
