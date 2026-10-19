@@ -1,0 +1,6 @@
+RADV for the PlayStation 5, built by tools/build-radv.sh release
+fork: /home/garyriches.guest/ps5/PS5_Vulkan/../PS5_Mesa
+revision: 7b59ef27c1b09b9671bc4153c41940c3155c3af2
+assertions: off
+sdk: b83202be73e930050e00de0f1b4d9ec46c0391bf
+archive sha256: cf4445873a06ef6fd4e1f34549448d586ddc0e1fe8d7979ab417494491f8761f
