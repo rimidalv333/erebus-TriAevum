@@ -1,6 +1,6 @@
 # TriAevum OOT3d for the PlayStation 5
 
-A patch set that ports [TriAevum](https://github.com/nicbarker/triaevum) (the AOT-recompiled Ocarina of Time 3D with its own Vulkan PICA renderer) to the PlayStation 5. The game runs as a statically linked in-process title (`oot3d_native_game` target), producing a single `eboot.bin`. Vulkan rendering goes through RADV. This port reuses the PS5 platform layer, SDK toolchain, and Vulkan driver from the [WWHD PS5 port](https://github.com/griches/PS5_WindWakerHD).
+A patch set that ports [TriAevum](https://github.com/coccofresco/TriAevum) (the AOT-recompiled Ocarina of Time 3D with its own Vulkan PICA renderer) to the PlayStation 5. The game runs as a statically linked in-process title (`oot3d_native_game` target), producing a single `eboot.bin`. Vulkan rendering goes through RADV. This port reuses the PS5 platform layer, SDK toolchain, and Vulkan driver from the [WWHD PS5 port](https://github.com/griches/PS5_WindWakerHD).
 
 Licensed under GPL-3.0. This is a bring-your-own and build-your-own kit (You supply the ROM and build the binary yourself). 
 eboot.bin contains Nintendo-derived translated code and cannot be shared. The AOT translation step requires a legitimate dump of the EU version of OoT3DS (title ID 0004000000033500, ver 1.4 rev1) — the translator’s symbol table and shard layout are specific to that release.
