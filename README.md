@@ -151,14 +151,4 @@ Let Forge finish - it will produce the translated title source under data/titles
 
 From the TriAevum-v0.8.0-beta.1.1-Windows-x64/ folder run under WSL:
 
-unzip source/TriAevum-source.zip -d source
-git clone https://github.com/rimidalv333/erebus-TriAevum.git
-export R="$(pwd)/erebus-TriAevum/triaevum-ps5"
-
-cd source
-git init
-git apply --ignore-whitespace "$R/triaevum-ps5-runtime.patch"
-cd ..
-
-TITLES=$(ls -d data/titles/oot3d-eur-catalogue-*/*/ | head -1)
-"$R/ps5/build-ps5.sh" "$R/kit" "source" "$TITLES" "ps5-work" 2>&1 | tee build.log
+... WIP
