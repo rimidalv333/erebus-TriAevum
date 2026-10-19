@@ -9,7 +9,7 @@
 #                 TITLE_SOURCE_MANIFEST.json and the 256 oot3d_whole_aot_shard_NNN.cpp)
 #   WORK          where everything is built (default ./ps5-work)
 #
-# Result: WORK/dist/PPSA99307/ (eboot.bin, sce_sys, sce_module). Needs clang 18+ with
+# Result: WORK/dist/PPSA33500/ (eboot.bin, sce_sys, sce_module). Needs clang 18+ with
 # lld, cmake >= 3.30 (the source uses CXX_COMPILER_FRONTEND_VARIANT), ninja, git, python3,
 # and the compiler-rt builtins (libclang-rt-dev). The first run downloads and builds SDL2,
 # shaderc/glslang/SPIRV-Tools, zlib, libzip, tinyxml2, spdlog, nlohmann_json (about 20 minutes);
@@ -41,6 +41,14 @@ if [[ ! -f $prefix/lib/libvulkan_shim.a ]]; then
 fi
 export PS5_KIT=$kit PS5_DEPS_PREFIX=$prefix WORK_DEPS=$wd TRIAEVUM_PS5_TITLE_DIR=$title
 export PS5_DIST_DIR=$work/dist
+# Pre-populate stb_image.h so CMake does not need to download it at configure time
+stb_dir=$work/build/_deps/stb
+mkdir -p "$stb_dir"
+if [[ ! -f $stb_dir/stb_image.h ]]; then
+    curl -fsSL \
+        "https://github.com/nothings/stb/raw/0bc88af4de5fb022db643c2d8e549a0927749354/stb_image.h" \
+        -o "$stb_dir/stb_image.h"
+fi
 "$here/configure-host.sh" "$src" "$work/build"
 ninja -C "$work/build" oot3d_native_game
-echo "done: $work/dist/PPSA99307"
+echo "done: $work/dist/PPSA33500"
