@@ -152,3 +152,8 @@ Let Forge finish - it will produce the translated title source under data/titles
 From the TriAevum-v0.8.0-beta.1.1-Windows-x64/ folder run under WSL:
 
 ... WIP
+
+<img width="1920" height="1080" alt="Screenshot 2026-10-20 00-47-13" src="https://github.com/user-attachments/assets/0330305b-8285-4a13-9d26-05fb06a9e6ac" />
+<img width="1920" height="1080" alt="Screenshot 2026-10-20 00-48-24" src="https://github.com/user-attachments/assets/d2a012d3-0c16-45ea-a8be-826ff48ff394" />
+<img width="1920" height="1080" alt="Screenshot 2026-10-20 00-48-50" src="https://github.com/user-attachments/assets/593fc0a7-8088-4371-858a-31902c07955b" />
+
