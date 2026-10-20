@@ -84,6 +84,10 @@ In WSL, these paths are accessible under `/mnt/d/triaevum-ps5/`.
 
 ## Step-by-step build guide
 
+Prerequisites (WSL, once):
+sudo apt install clang lld cmake ninja-build git python3 libclang-rt-dev unzip curl
+cmake --version   # must be >= 3.30
+
 Download and extract TriAevum-v0.8.0-beta.1.1-Windows-x64.zip from https://github.com/coccofresco/TriAevum/releases/tag/v0.8.0-beta.1.1
 Navigate inside the folder TriAevum-v0.8.0-beta.1.1-Windows-x64/
 Run TriAevumForge.exe and point it at your decrypted EUR ROM (.3ds or .cci, title ID 0004000000033500, v1.4 rev1). Click on 'Prepare and install'.
@@ -91,8 +95,25 @@ Run TriAevumForge.exe and point it at your decrypted EUR ROM (.3ds or .cci, titl
 Let Forge finish - it will produce the translated title source under data/titles/oot3d-eur-catalogue...
 
 From the TriAevum-v0.8.0-beta.1.1-Windows-x64/ folder run under WSL:
+unzip -o source/TriAevum-source.zip -d source
+unzip -o source/titles/oot3d-eur-project-baseline-16a6b0aa-translated.zip -d source/titles/oot3d-eur-translated
+TITLES=$(dirname "$(find source/titles/oot3d-eur-translated -name TITLE_SOURCE_MANIFEST.json | head -1)")
 
-... WIP
+git clone https://github.com/rimidalv333/erebus-TriAevum.git
+export R="$(pwd)/erebus-TriAevum/triaevum-ps5"
+chmod +x "$R"/ps5/*.sh
+
+cd source
+git init -q
+git apply --ignore-whitespace "$R/triaevum-ps5-runtime.patch"
+cd ..
+
+"$R/ps5/build-ps5.sh" "$R/kit" "source" "$TITLES" "ps5-work" 2>&1 | tee build.log
+(If any failures occur during build like crashing while optimizing one SPIRV-Tools file, rerun the build)
+(If failures during build continue *add specification to what the segmentation faults are* try downgrading llvm
+sudo apt install clang-19 lld-19 llvm-19 libclang-rt-19-dev
+export LLVM_CONFIG=/usr/bin/llvm-config-19
+"$R/kit/sdk/bin/prospero-llvm-config" --version)
 
 <img width="1920" height="1080" alt="Screenshot 2026-10-20 00-47-13" src="https://github.com/user-attachments/assets/0330305b-8285-4a13-9d26-05fb06a9e6ac" />
 <img width="1920" height="1080" alt="Screenshot 2026-10-20 00-48-24" src="https://github.com/user-attachments/assets/d2a012d3-0c16-45ea-a8be-826ff48ff394" />
