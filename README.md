@@ -105,7 +105,7 @@ chmod +x "$R"/ps5/*.sh
 
 cd source
 git init -q
-git apply --ignore-whitespace "$R/triaevum-ps5-runtime.patch"
+git apply --ignore-whitespace "$R/triaevum-ps5-runtime-combined.patch"
 cd ..
 
 "$R/ps5/build-ps5.sh" "$R/kit" "source" "$TITLES" "ps5-work" 2>&1 | tee build.log
