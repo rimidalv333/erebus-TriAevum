@@ -15,35 +15,25 @@ All patches apply to the TriAevum beta.1.1 source tree (`b20ff67`):
 
 All work is done on **Windows with WSL2** (Ubuntu recommended). You need the following installed inside WSL:
 
-- **clang 18+** with **lld** (the linker)
+**clang 18+** with **lld** (the linker); **CMake >= 3.30**; **Ninja**; **Git**; **Python 3** (for the Vulkan shim generator and build scripts); **zlib development headers** (for the native tool); **compiler-rt builtins** (`libclang-rt-dev` or `libclang-rt-18-dev` depending on distro)
   ```bash
   sudo apt install clang-18 lld-18 libclang-rt-18-dev
-  ```
-- **CMake >= 3.30**
-  ```bash
+
   # If your distro's cmake is older:
   pip3 install cmake --break-system-packages
-  ```
-- **Ninja**
-  ```bash
+
   sudo apt install ninja-build
-  ```
-- **Git**
-  ```bash
+
   sudo apt install git
-  ```
-- **Python 3** (for the Vulkan shim generator and build scripts)
-  ```bash
+
   sudo apt install python3
-  ```
-- **zlib development headers** (for the native tool)
-  ```bash
+
   sudo apt install zlib1g-dev
-  ```
-- **compiler-rt builtins** (`libclang-rt-dev` or `libclang-rt-18-dev` depending on distro)
+```
+
+```bash
 
 Make sure `clang-18`, `clang++-18`, and `ld.lld-18` are in your PATH, or symlink them:
-```bash
 sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-18 100
 sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-18 100
 sudo update-alternatives --install /usr/bin/ld.lld ld.lld /usr/bin/ld.lld-18 100
